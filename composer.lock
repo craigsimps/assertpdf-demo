@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b1d77dcc9ecc2b4ef65a521983cc7f9",
+    "content-hash": "b330332d8ec0633d8a29bde86ed7c363",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -6382,12 +6382,12 @@
             "time": "2026-01-08T08:02:38+00:00"
         },
         {
-            "name": "craigsimps/laravel-pdf-testing",
-            "version": "dev-milestone-3-release-readiness",
+            "name": "craigsimps/assertpdf",
+            "version": "0.1.0",
             "dist": {
                 "type": "path",
-                "url": "../laravel-pdf-testing",
-                "reference": "2127e20de8b189f142223c4f2e402dad0604eb52"
+                "url": "../assertpdf",
+                "reference": "5121fbe87b16170cded98a9933f1dc611af5d940"
             },
             "require": {
                 "php": "^8.3",
@@ -6406,19 +6406,19 @@
                 "spatie/laravel-pdf": "Assert directly on a PdfBuilder (tested with 1.9)."
             },
             "bin": [
-                "bin/pdf-testing"
+                "bin/assertpdf"
             ],
             "type": "library",
             "extra": {
                 "laravel": {
                     "providers": [
-                        "PdfTesting\\PdfTestingServiceProvider"
+                        "AssertPdf\\AssertPdfServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "PdfTesting\\": "src/"
+                    "AssertPdf\\": "src/"
                 },
                 "files": [
                     "src/expectations.php"
@@ -6430,7 +6430,7 @@
                 ],
                 "lint": [
                     "find src tests config -name '*.php' -print0 | xargs -0 -n1 php -l",
-                    "php -l bin/pdf-testing",
+                    "php -l bin/assertpdf",
                     "node --check bin/pdf.mjs",
                     "node --check bin/snapshot.mjs",
                     "node --check tests/fixtures/generate.mjs"
@@ -9241,9 +9241,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "craigsimps/laravel-pdf-testing": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

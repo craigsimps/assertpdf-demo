@@ -7,7 +7,7 @@ This app has one public route: `/invoices/1001/pdf`. No landing page, authentica
 ## Setup and checks
 
 - Follow README fresh-checkout steps; PHP 8.3/8.4, Composer 2, Node **24.21.0**, npm 11.
-- `composer install`; `vendor/bin/pdf-testing install` (network needed at setup only).
+- `composer install`; `vendor/bin/assertpdf install` (network needed at setup only).
 - `composer test` — full suite, visual intentionally opt-in.
 - `composer test:pdf` — portable real PDF text/page assertions through HTTP.
 - `composer test:visual` — compare reviewed darwin/arm64 snapshot.

@@ -10,7 +10,7 @@ The MIT licence in this application's root applies to the application, not to it
 | Dompdf PHP font library | 1.0.2 | LGPL-2.1-or-later, `vendor/dompdf/php-font-lib/LICENSE` |
 | Dompdf PHP SVG library | 1.0.2 | LGPL-3.0-or-later, `vendor/dompdf/php-svg-lib/LICENSE` |
 | Pest | 3.8.6 | MIT, `vendor/pestphp/pest/LICENSE.md` |
-| PDF testing toolkit | dev-milestone-3-release-readiness | MIT, `vendor/craigsimps/laravel-pdf-testing/LICENSE` |
+| AssertPDF (PDF testing toolkit) | 0.1.0 (local path override of `^0.1`) | MIT, `vendor/craigsimps/assertpdf/LICENSE` |
 | pdfjs-dist | 6.4.299 | Apache-2.0, toolkit `node_modules/pdfjs-dist/LICENSE` |
 | @napi-rs/canvas | 1.1.0 | MIT, toolkit `node_modules/@napi-rs/canvas/LICENSE` |
 | pixelmatch | 8.0.0 | ISC, toolkit `node_modules/pixelmatch/LICENSE` |

@@ -1,22 +1,22 @@
-# Laravel PDF testing demo
+# AssertPDF demo
 
-A deliberately minimal Laravel 12 app for [toolkit milestone 3, part 1](https://github.com/craigsimps/laravel-pdf-testing/issues/3). `GET /invoices/1001/pdf` renders an actual one-page invoice with `barryvdh/laravel-dompdf`. Tests go through Laravel's HTTP test client and inspect the resulting PDF using the toolkit's existing `PdfTesting` expectations, not HTML or a PDF fake.
+A deliberately minimal Laravel 12 app showing [AssertPDF](https://github.com/craigsimps/assertpdf), a PDF testing toolkit for Laravel. `GET /invoices/1001/pdf` renders an actual one-page invoice with `barryvdh/laravel-dompdf`. Tests go through Laravel's HTTP test client and inspect the resulting PDF with AssertPDF's expectations, not HTML or a PDF fake.
 
-There is no landing page (`/` returns 404), authentication, database, frontend build, CSS, browser or external invoice service. The invoice is fixed sample data: 2 × GBP 50.00 + 20% VAT = **GBP 120.00**. All design/styling is intentionally deferred to Claude Code. This is a local development example, not a production invoice service.
+There is no landing page (`/` returns 404), authentication, database, frontend build, CSS, browser or external invoice service. The invoice is fixed sample data: 2 × GBP 50.00 + 20% VAT = **GBP 120.00**. This is a local development example, not a production invoice service.
 
-## Fresh local checkout setup
+## Setup
 
-Prerequisites: PHP 8.3 or 8.4 with Laravel/Dompdf extensions (including DOM, mbstring and XML), Composer 2, **Node 24.21.0** and npm 11. Verified here with PHP 8.4.19, Composer 2.8.9, npm 11.19.0, macOS 25.6.0 / arm64. There is no public demo remote yet; these steps apply to a local clone/copy of this repository.
+Prerequisites: PHP 8.3 or 8.4 with Laravel/Dompdf extensions (including DOM, mbstring and XML), Composer 2, **Node 24.21.0** and npm 11. Verified here with PHP 8.4.19, Composer 2.8.9, npm 11.19.0, macOS 25.6.0 / arm64.
 
 1. Place the two repositories side by side:
 
    ```text
    parent/
-     laravel-pdf-testing/       # toolkit, milestone-3-release-readiness branch
-     laravel-pdf-testing-demo/  # this app
+     assertpdf/       # the toolkit, https://github.com/craigsimps/assertpdf
+     assertpdf-demo/  # this app
    ```
 
-   Check out `milestone-3-release-readiness` in the toolkit. The path repository also declares a Composer version override for `dev-milestone-3-release-readiness`; this supports an equivalent detached checkout but does not verify its contents. Use a trusted copy of that branch. The toolkit is not on Packagist yet.
+   `composer.json` requires `craigsimps/assertpdf:^0.1` and keeps a local path repository pointing at `../assertpdf` as a development override, with a Composer version override of `0.1.0`, so the demo installs from the sibling checkout whether or not the package is on Packagist yet. If your toolkit clone has another name, change the repository `url` in `composer.json`.
 
 2. From the demo directory, create runtime directories and environment before installation:
 
@@ -26,14 +26,14 @@ Prerequisites: PHP 8.3 or 8.4 with Laravel/Dompdf extensions (including DOM, mbs
    composer install
    php artisan key:generate
    node --version # must print v24.21.0
-   vendor/bin/pdf-testing install
+   vendor/bin/assertpdf install
    ```
 
    `composer.lock` pins all 124 PHP packages. Framework/generator constraints stay within their supported major versions; the lockfile preserves the exact tested versions. `composer validate --strict` checks the manifest and lockfile. Do not run `composer update` for routine setup.
 
    The path repository uses **`symlink: false`**: Composer mirrors the toolkit into this app's vendor directory. The supported installer runs the toolkit's pinned npm install inside that copy, never in the sibling toolkit checkout. There is no application `package.json`, npm build or frontend asset pipeline. Do not run npm in the app root. Installation needs network access; assertions run locally without fetching resources.
 
-   To pick up intentional changes from the sibling toolkit, run `composer reinstall craigsimps/laravel-pdf-testing`, then `vendor/bin/pdf-testing install` again. A path dependency is a local working-copy input, not a reproducible remote release, even with a lockfile. Record/review the toolkit revision separately when updating it.
+   To pick up intentional changes from the sibling toolkit, run `composer reinstall craigsimps/assertpdf`, then `vendor/bin/assertpdf install` again. A path dependency is a local working-copy input, not a reproducible remote release, even with a lockfile. Record/review the toolkit revision separately when updating it.
 
 3. Run the portable text/count suite, then optionally the pinned-machine visual comparison:
 
@@ -66,24 +66,23 @@ To intentionally create/replace a baseline after reviewing an invoice change:
 ```sh
 composer snapshot:update
 # Equivalent explicit flags:
-# PDF_TESTING_UPDATE_SNAPSHOTS=1 PDF_DEMO_VISUAL=1 vendor/bin/pest --group=visual
+# ASSERTPDF_UPDATE_SNAPSHOTS=1 PDF_DEMO_VISUAL=1 vendor/bin/pest --group=visual
 composer test:visual
 git diff -- tests/pdf-snapshots
 ```
 
-Open and review `page-1.png` before committing the update. Normal tests never set `PDF_TESTING_UPDATE_SNAPSHOTS`; leave it unset in your shell and CI. Missing baselines fail when opted in, rather than being silently created. Comparison images/diffs under `tests/pdf-snapshots/*/artifacts/` are ignored; baseline PNGs and manifests are tracked. Do not regenerate baselines automatically in CI.
+Open and review `page-1.png` before committing the update. Normal tests never set `ASSERTPDF_UPDATE_SNAPSHOTS`; leave it unset in your shell and CI. Missing baselines fail when opted in, rather than being silently created. Comparison images/diffs under `tests/pdf-snapshots/*/artifacts/` are ignored; baseline PNGs and manifests are tracked. Do not regenerate baselines automatically in CI.
 
-## Pinned dependencies and future release
+## Pinned dependencies and installing from Packagist
 
-Current direct dependencies: Laravel **12.70.2**, barryvdh/laravel-dompdf **3.1.2**, Pest **3.8.6**, local toolkit **dev-milestone-3-release-readiness**. Locked Dompdf is **3.1.6** and PHPUnit is **11.5.50**. See `composer.lock` for the complete exact transitive graph and upstream source references.
+Current direct dependencies: Laravel **12.70.2**, barryvdh/laravel-dompdf **3.1.2**, Pest **3.8.6**, AssertPDF **^0.1** (resolved as 0.1.0 from the local path override). Locked Dompdf is **3.1.6** and PHPUnit is **11.5.50**. See `composer.lock` for the complete exact transitive graph and upstream source references.
 
-**Future Packagist installation — NOT available yet.** After an authorised `0.1` release exists, replace the local path repository/development constraint, deliberately refresh and review the lockfile, then reinstall the renderer:
+**Installing from Packagist** once `craigsimps/assertpdf` 0.1 is published: remove the local path override, refresh the lock entry and reinstall the renderer:
 
 ```sh
-# Future only; do not run against today's unpublished package:
 composer config --unset repositories.0
-composer require --dev 'craigsimps/laravel-pdf-testing:^0.1' -W
-vendor/bin/pdf-testing install
+composer update craigsimps/assertpdf
+vendor/bin/assertpdf install
 ```
 
 ## Licensing
