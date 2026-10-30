@@ -1,0 +1,13 @@
+/vendor/
+/node_modules/
+/.env
+/.env.*
+!/.env.example
+/.phpunit.cache/
+/.phpunit.result.cache
+/bootstrap/cache/*
+!/bootstrap/cache/.gitignore
+/storage/*
+!/storage/.gitignore
+/tests/pdf-snapshots/*/artifacts/
+.DS_Store

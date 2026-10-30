@@ -1,0 +1,15 @@
+{
+  "renderer": {
+    "dependencies": {
+      "@napi-rs/canvas": "1.1.0",
+      "pdfjs-dist": "6.4.299",
+      "pixelmatch": "8.0.0",
+      "pngjs": "7.0.0"
+    },
+    "node": "v24.21.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "scale": 1
+  },
+  "pages": 1
+}
