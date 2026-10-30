@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b330332d8ec0633d8a29bde86ed7c363",
+    "content-hash": "45f2c99181577a3f7f5982a061efb641",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -6383,11 +6383,17 @@
         },
         {
             "name": "craigsimps/assertpdf",
-            "version": "0.1.0",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/craigsimps/assertpdf.git",
+                "reference": "13399dd8c707fb4d2a81187cf88f8f44d659e6e2"
+            },
             "dist": {
-                "type": "path",
-                "url": "../assertpdf",
-                "reference": "5121fbe87b16170cded98a9933f1dc611af5d940"
+                "type": "zip",
+                "url": "https://api.github.com/repos/craigsimps/assertpdf/zipball/13399dd8c707fb4d2a81187cf88f8f44d659e6e2",
+                "reference": "13399dd8c707fb4d2a81187cf88f8f44d659e6e2",
+                "shasum": ""
             },
             "require": {
                 "php": "^8.3",
@@ -6417,33 +6423,23 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "AssertPdf\\": "src/"
-                },
                 "files": [
                     "src/expectations.php"
-                ]
-            },
-            "scripts": {
-                "test": [
-                    "pest"
                 ],
-                "lint": [
-                    "find src tests config -name '*.php' -print0 | xargs -0 -n1 php -l",
-                    "php -l bin/assertpdf",
-                    "node --check bin/pdf.mjs",
-                    "node --check bin/snapshot.mjs",
-                    "node --check tests/fixtures/generate.mjs"
-                ]
+                "psr-4": {
+                    "AssertPdf\\": "src/"
+                }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Pest and PHPUnit assertions against real PDF text, pages and rendered snapshots.",
-            "transport-options": {
-                "symlink": false,
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/craigsimps/assertpdf/issues",
+                "source": "https://github.com/craigsimps/assertpdf/tree/v0.1.0"
+            },
+            "time": "2026-10-30T18:46:44+00:00"
         },
         {
             "name": "doctrine/deprecations",

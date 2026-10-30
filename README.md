@@ -8,17 +8,7 @@ There is no landing page (`/` returns 404), authentication, database, frontend b
 
 Prerequisites: PHP 8.3 or 8.4 with Laravel/Dompdf extensions (including DOM, mbstring and XML), Composer 2, **Node 24.21.0** and npm 11. Verified here with PHP 8.4.19, Composer 2.8.9, npm 11.19.0, macOS 25.6.0 / arm64.
 
-1. Place the two repositories side by side:
-
-   ```text
-   parent/
-     assertpdf/       # the toolkit, https://github.com/craigsimps/assertpdf
-     assertpdf-demo/  # this app
-   ```
-
-   `composer.json` requires `craigsimps/assertpdf:^0.1`. A local path repository points at `../assertpdf` and gives that checkout a Composer version of `0.1.0`. This lets the demo install from the sibling checkout before the package is on Packagist. If your toolkit clone has another name, change the repository `url` in `composer.json`.
-
-2. From the demo directory, create runtime directories and environment before installation:
+1. From the demo directory, create runtime directories and environment before installation. `composer.json` requires `craigsimps/assertpdf:^0.1` from Packagist:
 
    ```sh
    mkdir -p bootstrap/cache storage/framework/cache storage/framework/sessions storage/framework/views storage/logs storage/fonts
@@ -31,11 +21,9 @@ Prerequisites: PHP 8.3 or 8.4 with Laravel/Dompdf extensions (including DOM, mbs
 
    `composer.lock` pins all 124 PHP packages. Framework/generator constraints stay within their supported major versions; the lockfile preserves the exact tested versions. `composer validate --strict` checks the manifest and lockfile. Do not run `composer update` for routine setup.
 
-   The path repository uses **`symlink: false`**: Composer mirrors the toolkit into this app's vendor directory. The supported installer runs the toolkit's pinned npm install inside that copy, never in the sibling toolkit checkout. There is no application `package.json`, npm build or frontend asset pipeline. Do not run npm in the app root. Installation needs network access; assertions run locally without fetching resources.
+   The supported installer runs the toolkit's pinned npm install inside `vendor/craigsimps/assertpdf`. There is no application `package.json`, npm build or frontend asset pipeline. Do not run npm in the app root. Installation needs network access; assertions run locally without fetching resources.
 
-   To pick up intentional changes from the sibling toolkit, run `composer reinstall craigsimps/assertpdf`, then `vendor/bin/assertpdf install` again. A path dependency is a local working-copy input, not a reproducible remote release, even with a lockfile. Record/review the toolkit revision separately when updating it.
-
-3. Run the portable text/count suite, then optionally the pinned-machine visual comparison:
+2. Run the portable text/count suite, then optionally the pinned-machine visual comparison:
 
    ```sh
    composer test        # 3 passed, 1 deliberately skipped visual test
@@ -45,7 +33,7 @@ Prerequisites: PHP 8.3 or 8.4 with Laravel/Dompdf extensions (including DOM, mbs
 
    No database creation/migration, login, Chrome or server process is needed for these HTTP tests. The testing key in `phpunit.xml` is public test-only material; `.env` uses your independently generated local key and is never committed.
 
-4. Inspect the endpoint yourself if desired:
+3. Inspect the endpoint yourself if desired:
 
    ```sh
    php artisan serve --host=127.0.0.1 --port=8000
@@ -73,17 +61,29 @@ git diff -- tests/pdf-snapshots
 
 Open and review `page-1.png` before committing the update. Normal tests never set `ASSERTPDF_UPDATE_SNAPSHOTS`; leave it unset in your shell and CI. Missing baselines fail when opted in, rather than being silently created. Comparison images/diffs under `tests/pdf-snapshots/*/artifacts/` are ignored; baseline PNGs and manifests are tracked. Do not regenerate baselines automatically in CI.
 
-## Pinned dependencies and installing from Packagist
+## Pinned dependencies
 
-Current direct dependencies: Laravel **12.70.2**, barryvdh/laravel-dompdf **3.1.2**, Pest **3.8.6**, AssertPDF **^0.1** (resolved as 0.1.0 from the local path override). Locked Dompdf is **3.1.6** and PHPUnit is **11.5.50**. See `composer.lock` for the complete exact transitive graph and upstream source references.
+Current direct dependencies: Laravel **12.70.2**, barryvdh/laravel-dompdf **3.1.2**, Pest **3.8.6**, AssertPDF **^0.1** (locked at v0.1.0 from Packagist). Locked Dompdf is **3.1.6** and PHPUnit is **11.5.50**. See `composer.lock` for the complete exact transitive graph and upstream source references.
 
-**Installing from Packagist:** once `craigsimps/assertpdf` 0.1 is published, remove the local path override, refresh the lock entry and reinstall the renderer:
+## Optional: test an unreleased toolkit checkout
+
+To run the demo against a local clone of the toolkit instead of Packagist, add a named path repository that mirrors the clone (no symlink) and gives it a version that satisfies `^0.1`, then refresh that one lock entry and reinstall the renderer:
 
 ```sh
-composer config --unset repositories.0
+composer config repositories.assertpdf '{"type":"path","url":"../assertpdf","options":{"symlink":false,"versions":{"craigsimps/assertpdf":"0.1.0"}}}'
 composer update craigsimps/assertpdf
 vendor/bin/assertpdf install
 ```
+
+Adjust the `url` if your clone is somewhere else. To go back to Packagist, remove the repository by name and refresh the entry again:
+
+```sh
+composer config --unset repositories.assertpdf
+composer update craigsimps/assertpdf
+vendor/bin/assertpdf install
+```
+
+Do not commit the path repository; it is a local working-copy input, not a reproducible release.
 
 ## Licensing
 
