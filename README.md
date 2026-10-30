@@ -1,6 +1,6 @@
 # AssertPDF demo
 
-A deliberately minimal Laravel 12 app showing [AssertPDF](https://github.com/craigsimps/assertpdf), a PDF testing toolkit for Laravel. `GET /invoices/1001/pdf` renders an actual one-page invoice with `barryvdh/laravel-dompdf`. Tests go through Laravel's HTTP test client and inspect the resulting PDF with AssertPDF's expectations, not HTML or a PDF fake.
+A small Laravel 12 app demonstrating [AssertPDF](https://github.com/craigsimps/assertpdf), a PDF testing toolkit for Laravel. `GET /invoices/1001/pdf` renders an actual one-page invoice with `barryvdh/laravel-dompdf`. Tests call the route through Laravel's HTTP test client and inspect the PDF with AssertPDF's expectations. They check the PDF bytes rather than HTML or a PDF fake.
 
 There is no landing page (`/` returns 404), authentication, database, frontend build, CSS, browser or external invoice service. The invoice is fixed sample data: 2 × GBP 50.00 + 20% VAT = **GBP 120.00**. This is a local development example, not a production invoice service.
 
@@ -16,7 +16,7 @@ Prerequisites: PHP 8.3 or 8.4 with Laravel/Dompdf extensions (including DOM, mbs
      assertpdf-demo/  # this app
    ```
 
-   `composer.json` requires `craigsimps/assertpdf:^0.1` and keeps a local path repository pointing at `../assertpdf` as a development override, with a Composer version override of `0.1.0`, so the demo installs from the sibling checkout whether or not the package is on Packagist yet. If your toolkit clone has another name, change the repository `url` in `composer.json`.
+   `composer.json` requires `craigsimps/assertpdf:^0.1`. A local path repository points at `../assertpdf` and gives that checkout a Composer version of `0.1.0`. This lets the demo install from the sibling checkout before the package is on Packagist. If your toolkit clone has another name, change the repository `url` in `composer.json`.
 
 2. From the demo directory, create runtime directories and environment before installation:
 
@@ -77,7 +77,7 @@ Open and review `page-1.png` before committing the update. Normal tests never se
 
 Current direct dependencies: Laravel **12.70.2**, barryvdh/laravel-dompdf **3.1.2**, Pest **3.8.6**, AssertPDF **^0.1** (resolved as 0.1.0 from the local path override). Locked Dompdf is **3.1.6** and PHPUnit is **11.5.50**. See `composer.lock` for the complete exact transitive graph and upstream source references.
 
-**Installing from Packagist** once `craigsimps/assertpdf` 0.1 is published: remove the local path override, refresh the lock entry and reinstall the renderer:
+**Installing from Packagist:** once `craigsimps/assertpdf` 0.1 is published, remove the local path override, refresh the lock entry and reinstall the renderer:
 
 ```sh
 composer config --unset repositories.0
